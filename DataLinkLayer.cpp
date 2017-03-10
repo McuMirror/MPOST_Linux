@@ -1,6 +1,7 @@
 #include "DataLinkLayer.h"
 #include "Acceptor.h"
 
+#include <unistd.h>
 #include <termios.h>
 #include <iostream>
 #include <string>
