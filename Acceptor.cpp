@@ -14,9 +14,9 @@ namespace MPOST
 {
 
 const char CAcceptor::C_R_N[] = "Copyright (C) 2007 MEI - "
-                                "The information contained here-in is the property of MEI and is not to be " 
-                                "disclosed or used without prior written permission of MEI. This copyright " 
-                                "extends to all media in which this information may be preserved including " 
+                                "The information contained here-in is the property of MEI and is not to be "
+                                "disclosed or used without prior written permission of MEI. This copyright "
+                                "extends to all media in which this information may be preserved including "
                                 "magnetic storage, computer print-out or visual display.";
 
 
@@ -27,139 +27,139 @@ pthread_cond_t  condition1 = PTHREAD_COND_INITIALIZER;
 
 CAcceptor::CAcceptor()
 {
-	pthread_mutex_init(&inStandardPollMutex, NULL);
-	pthread_mutex_init(&mutex1,   NULL);	
-	pthread_cond_init(&condition1, NULL);
+    pthread_mutex_init(&inStandardPollMutex, NULL);
+    pthread_mutex_init(&mutex1,   NULL);
+    pthread_cond_init(&condition1, NULL);
 
-	_port						= NULL;
+    _port                        = NULL;
 
-    _autoStack              			= false;
-    _bnfStatus              			= Unknown;
-    _capApplicationID       			= false;
-    _capApplicationPN       			= false;
-    _capAssetNumber         			= false;
-    _capAudit               			= false;
-    _capBarCodes            			= false;
-    _capBarCodesExt         			= false;
-    _capBNFStatus           			= false;
-    _capBookmark            			= false;
-    _capBootPN              			= false;
-    _capCalibrate           			= false;
-    _capCashBoxTotal        			= false;
-    _capCouponExt           			= false;
-    _capDevicePaused        			= false;
-    _capDeviceSoftReset     			= false;
-    _capDeviceType          			= false;
-    _capDeviceResets        			= false;
-    _capDeviceSerialNumber  			= false;
-    _capEscrowTimeout       			= false;			
-    _capFlashDownload					= false;
-    _capNoPush              			= false;
-    _capOrientationExt      			= false;
-    _capPupExt              			= false;
-    _capTestDoc             			= false;
-    _capVariantID           			= false;
-    _capVariantPN           			= false;
-    _cashBoxAttached        			= false;
-    _cashBoxFull            			= false;
-	_connected							= false;
-    _debugLog               			= false;
-    _deviceFailure          			= false;
-    _devicePaused           			= false;
-    _deviceStalled          			= false;
-    _deviceState            			= Disconnected;
-    _docType                			= None;
-	_enableAcceptance					= false;
-    _enableBarCodes         			= false;
-    _enableBookmarks        			= false;
-    _enableCouponExt        			= false;
-    _enableNoPush           			= false;
-    _highSecurity           			= false;
-    _orientationCtl         			= FourWay;
-    _orientationCtlExt      			= FourWay;
-	_version							= "V1.12, 283795112";
+    _autoStack                          = false;
+    _bnfStatus                          = Unknown;
+    _capApplicationID                   = false;
+    _capApplicationPN                   = false;
+    _capAssetNumber                     = false;
+    _capAudit                           = false;
+    _capBarCodes                        = false;
+    _capBarCodesExt                     = false;
+    _capBNFStatus                       = false;
+    _capBookmark                        = false;
+    _capBootPN                          = false;
+    _capCalibrate                       = false;
+    _capCashBoxTotal                    = false;
+    _capCouponExt                       = false;
+    _capDevicePaused                    = false;
+    _capDeviceSoftReset                 = false;
+    _capDeviceType                      = false;
+    _capDeviceResets                    = false;
+    _capDeviceSerialNumber              = false;
+    _capEscrowTimeout                   = false;
+    _capFlashDownload                    = false;
+    _capNoPush                          = false;
+    _capOrientationExt                  = false;
+    _capPupExt                          = false;
+    _capTestDoc                         = false;
+    _capVariantID                       = false;
+    _capVariantPN                       = false;
+    _cashBoxAttached                    = false;
+    _cashBoxFull                        = false;
+    _connected                            = false;
+    _debugLog                           = false;
+    _deviceFailure                      = false;
+    _devicePaused                       = false;
+    _deviceStalled                      = false;
+    _deviceState                        = Disconnected;
+    _docType                            = None;
+    _enableAcceptance                    = false;
+    _enableBarCodes                     = false;
+    _enableBookmarks                    = false;
+    _enableCouponExt                    = false;
+    _enableNoPush                       = false;
+    _highSecurity                       = false;
+    _orientationCtl                     = FourWay;
+    _orientationCtlExt                  = FourWay;
+    _version                            = "V1.12, 283795112";
 
-    _isDeviceJammed						= false;
-    _isCheated	 						= false;
-    _isPoweredUp	 					= false;
-    _isInvalidCommand	 				= false;
-    
-    _inSoftResetOneSecondIgnore			= false;
-    _inSoftResetWaitForReply			= false;
+    _isDeviceJammed                        = false;
+    _isCheated                             = false;
+    _isPoweredUp                         = false;
+    _isInvalidCommand                     = false;
 
-    _wasDocTypeSetOnEscrow				= false;
+    _inSoftResetOneSecondIgnore            = false;
+    _inSoftResetWaitForReply            = false;
+
+    _wasDocTypeSetOnEscrow                = false;
 
     // This flag is set to true when communication is lost (30 sec w/o a reply) AFTER having been
     // established to begin with (via the Open method). When the worker thread receives a reply
     // and this flag is true, it should raise a Connected event.
-    _wasDisconnected					= false;
+    _wasDisconnected                    = false;
 
-    // This flag is only true when the application starts up and only until it receives a 
+    // This flag is only true when the application starts up and only until it receives a
     // to its very first poll, an "empty" poll used to retrieve capabilities. The flag is used
     // to suppress the raising of events, except PowerUp, for that first poll cycle.
-    _isVeryFirstPoll					= true;
+    _isVeryFirstPoll                    = true;
 
-	_suppressStandardPoll				= false;
+    _suppressStandardPoll                = false;
 
-    _shouldRaiseConnectedEvent			= true;
-	_shouldRaiseDisconnectedEvent		= true;
-	_shouldRaiseEscrowEvent				= true;
-    _shouldRaisePUPEscrowEvent			= true;
-    _shouldRaiseStackedEvent			= true;
-    _shouldRaiseReturnedEvent			= true;
-    _shouldRaiseRejectedEvent			= true;
-    _shouldRaiseCheatedEvent			= true;
-    _shouldRaiseStackerFullEvent		= true;
-    _shouldRaiseCalibrateStartEvent		= true;
-    _shouldRaiseCalibrateProgressEvent	= true;
-    _shouldRaiseCalibrateFinishEvent	= false;
-    _shouldRaiseDownloadStartEvent		= true;
-    _shouldRaiseDownloadRestartEvent	= true;
-    _shouldRaiseDownloadProgressEvent	= true;
-    _shouldRaiseDownloadFinishEvent		= true;
-    _shouldRaisePauseDetectedEvent		= true;
-    _shouldRaisePauseClearedEvent		= false;
-    _shouldRaiseStallDetectedEvent		= true;
-    _shouldRaiseStallClearedEvent		= false;
-    _shouldRaiseJamDetectedEvent		= true;
-    _shouldRaiseJamClearedEvent			= false;
-    _shouldRaisePowerUpEvent			= true;
-    _shouldRaiseInvalidCommandEvent		= true;
+    _shouldRaiseConnectedEvent            = true;
+    _shouldRaiseDisconnectedEvent        = true;
+    _shouldRaiseEscrowEvent                = true;
+    _shouldRaisePUPEscrowEvent            = true;
+    _shouldRaiseStackedEvent            = true;
+    _shouldRaiseReturnedEvent            = true;
+    _shouldRaiseRejectedEvent            = true;
+    _shouldRaiseCheatedEvent            = true;
+    _shouldRaiseStackerFullEvent        = true;
+    _shouldRaiseCalibrateStartEvent        = true;
+    _shouldRaiseCalibrateProgressEvent    = true;
+    _shouldRaiseCalibrateFinishEvent    = false;
+    _shouldRaiseDownloadStartEvent        = true;
+    _shouldRaiseDownloadRestartEvent    = true;
+    _shouldRaiseDownloadProgressEvent    = true;
+    _shouldRaiseDownloadFinishEvent        = true;
+    _shouldRaisePauseDetectedEvent        = true;
+    _shouldRaisePauseClearedEvent        = false;
+    _shouldRaiseStallDetectedEvent        = true;
+    _shouldRaiseStallClearedEvent        = false;
+    _shouldRaiseJamDetectedEvent        = true;
+    _shouldRaiseJamClearedEvent            = false;
+    _shouldRaisePowerUpEvent            = true;
+    _shouldRaiseInvalidCommandEvent        = true;
 
-    _shouldRaiseCashBoxAttachedEvent	= false;
-    _shouldRaiseCashBoxRemovedEvent		= true;
+    _shouldRaiseCashBoxAttachedEvent    = false;
+    _shouldRaiseCashBoxRemovedEvent        = true;
 
-    _stopWorkerThread					= false;
-    _stopOpenThread						= false;
-    _stopFlashDownloadThread			= false;
+    _stopWorkerThread                    = false;
+    _stopOpenThread                        = false;
+    _stopFlashDownloadThread            = false;
 
-	_transactionTimeout					= 50;
-	_downloadTimeout					= 200;
- 
+    _transactionTimeout                    = 50;
+    _downloadTimeout                    = 200;
+
 
     for (int i = Events_Begin; i < Events_End; i++)
-    	_eventHandlers[i] = 0;
-    
+        _eventHandlers[i] = 0;
 
-    _workerThread						= NULL;
-    _openThread							= NULL;
-    _flashDownloadThread				= NULL;
-	_dataLinkLayer						= NULL;
 
-	_isReplyAcked = false;
+    _workerThread                        = NULL;
+    _openThread                            = NULL;
+    _flashDownloadThread                = NULL;
+    _dataLinkLayer                        = NULL;
+
+    _isReplyAcked = false;
 
     _compressLog = false; // true;
 
-	_debugLogPath = "/root/";
+    _debugLogPath = "/root/";
 }
 
 
 void CAcceptor::Open(string portName, PowerUp powerUp)
 {
     if (_connected)
-	{
-		throw CAcceptorException("Open cannot be called when Connected == true.");
-	}
+    {
+        throw CAcceptorException("Open cannot be called when Connected == true.");
+    }
 
 
     // If unable to connect, we raise a Disconnected event (even if Connected is never raised).
@@ -170,10 +170,10 @@ void CAcceptor::Open(string portName, PowerUp powerUp)
     _devicePowerUp = powerUp;
 
 
-	if (!OpenPort())
-	{
-		throw CAcceptorException("Could not open the serial port.");
-	}
+    if (!OpenPort())
+    {
+        throw CAcceptorException("Could not open the serial port.");
+    }
 
 
     if (_debugLog)
@@ -182,11 +182,11 @@ void CAcceptor::Open(string portName, PowerUp powerUp)
     }
 
 
-	pthread_create(&_workerThread, NULL, CWorker::MessageLoopThread, (void*)this);
+    pthread_create(&_workerThread, NULL, CWorker::MessageLoopThread, (void*)this);
 
-	pthread_create(&_openThread, NULL, CAcceptor::OpenThread, (void*)this);
-	
-	
+    pthread_create(&_openThread, NULL, CAcceptor::OpenThread, (void*)this);
+
+
 }
 
 
@@ -197,9 +197,9 @@ void CAcceptor::Open(string portName, PowerUp powerUp)
 // is not blocked for that long.
 void* CAcceptor::OpenThread(void* param)
 {
-	CAcceptor* acceptor = static_cast<CAcceptor*>(param);
+    CAcceptor* acceptor = static_cast<CAcceptor*>(param);
 
-	vector<char>* reply = NULL;
+    vector<char>* reply = NULL;
 
     bool wasStopped = false;
 
@@ -226,9 +226,9 @@ void* CAcceptor::OpenThread(void* param)
         acceptor->RaiseDownloadRestartEvent();
     }
 
-	acceptor->_openThread = NULL;
+    acceptor->_openThread = NULL;
 
-	return 0;
+    return 0;
 }
 
 
@@ -237,32 +237,32 @@ void* CAcceptor::OpenThread(void* param)
 bool CAcceptor::OpenPort()
 {
     struct termios oldtio,my_termios;
-    
-    _port = open(_devicePortName.c_str(), O_RDWR | O_NOCTTY  | O_NDELAY); 
+
+    _port = open(_devicePortName.c_str(), O_RDWR | O_NOCTTY  | O_NDELAY);
     if (_port < 0) {perror(_devicePortName.c_str()); exit(-1); }
-    
+
     tcgetattr(_port, &oldtio); /* save current port settings */
-    
+
     bzero(&my_termios, sizeof(my_termios));
     my_termios.c_cflag = B9600 | CS7 | CREAD | CLOCAL | HUPCL | PARENB;
     my_termios.c_oflag = 0;
     my_termios.c_iflag = IGNPAR | IGNBRK;
     my_termios.c_lflag = NOFLSH;
- 
+
     cfsetospeed(&my_termios, B9600);
     cfsetispeed(&my_termios, B9600);
-    
-       
+
+
     /* set input mode (non-canonical, no echo,...) */
     my_termios.c_lflag = 0;
-     
+
     my_termios.c_cc[VTIME]    = 0;
     my_termios.c_cc[VMIN]     = 11;// 11;
-    
+
     tcflush(_port, TCIFLUSH);
     tcsetattr(_port, TCSANOW, &my_termios);
 
-	return true;
+    return true;
 }
 
 
@@ -285,8 +285,8 @@ void CAcceptor::PollingLoop(CAcceptor* acceptor, vector<char>** reply, bool &was
         // when it cannot communicate, the Worker.MessageLoopThread can block for more than 10 ms,
         // during which time the SendCommand below can be adding multiple unnecessary commands
         // to the message queue. All polling commands (really, there should only be one) that
-        // the MessageLoopThread did not process are irrelevant and can be discarded.        
-		acceptor->_messageQueue.clear();
+        // the MessageLoopThread did not process are irrelevant and can be discarded.
+        acceptor->_messageQueue.clear();
 
         *reply = acceptor->SendSynchronousCommand(payload, sizeof(payload));
 
@@ -307,7 +307,7 @@ void CAcceptor::PollingLoop(CAcceptor* acceptor, vector<char>** reply, bool &was
                 pthread_join(acceptor->_flashDownloadThread, NULL);
                 acceptor->_deviceState = Idling;
                 wasStopped = true;
-				return;
+                return;
             }
         }
         else if (acceptor->_openThread != 0)
@@ -320,16 +320,16 @@ void CAcceptor::PollingLoop(CAcceptor* acceptor, vector<char>** reply, bool &was
                 pthread_join(acceptor->_workerThread, NULL);
 
                 close(acceptor->_port);
-				acceptor->_port = NULL;
+                acceptor->_port = NULL;
                 wasStopped = true;
                 return;
             }
         }
 
-		if ((*reply)->size() > 0)
-			return;
-		else
-			delete *reply;
+        if ((*reply)->size() > 0)
+            return;
+        else
+            delete *reply;
     }
     while (true);
 }
@@ -343,7 +343,7 @@ void CAcceptor::Close()
     {
         _stopFlashDownloadThread = true;
 
-        pthread_join(_flashDownloadThread, NULL); 
+        pthread_join(_flashDownloadThread, NULL);
     }
     else if (!_connected)
     {
@@ -363,8 +363,8 @@ void CAcceptor::Close()
         _enableAcceptance = false;
 
 
-	if (_dataLinkLayer != NULL)
-	    _dataLinkLayer->FlushIdenticalTransactionsToLog();
+    if (_dataLinkLayer != NULL)
+        _dataLinkLayer->FlushIdenticalTransactionsToLog();
 
 
     CloseLogFile();
@@ -372,12 +372,12 @@ void CAcceptor::Close()
 
     _stopWorkerThread = true;
 
-    
-    pthread_join(_workerThread, NULL); 
+
+    pthread_join(_workerThread, NULL);
 
 
-	close(_port);
-	_port = NULL;
+    close(_port);
+    _port = NULL;
 
 
     _connected = false;
@@ -410,7 +410,7 @@ void CAcceptor::EscrowReturn()
 void CAcceptor::EscrowStack()
 {
     VerifyConnected("EscrowStack");
-    
+
     char payload[4];
 
     ConstructOmnibusCommand(payload, CmdOmnibus, 1);
@@ -431,20 +431,20 @@ string CAcceptor::GetApplicationID()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-	if (reply->size() == 14)
-	{
-		string s(&(*reply)[3], 9);
-		
-		return s;
-	}
-	else
-	{
-		return "";
-	}
+    if (reply->size() == 14)
+    {
+        string s(&(*reply)[3], 9);
 
-	delete reply;
+        return s;
+    }
+    else
+    {
+        return "";
+    }
 
-	return "";
+    delete reply;
+
+    return "";
 }
 
 
@@ -458,20 +458,20 @@ string CAcceptor::GetApplicationPN()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-	if (reply->size() == 14)
-	{
-		string s(&(*reply)[3], 9);
-		
-		return s;
-	}
-	else
-	{
-		return "";
-	}
+    if (reply->size() == 14)
+    {
+        string s(&(*reply)[3], 9);
 
-	delete reply;
+        return s;
+    }
+    else
+    {
+        return "";
+    }
 
-	return "";
+    delete reply;
+
+    return "";
 }
 
 
@@ -482,7 +482,7 @@ vector<int> CAcceptor::GetAuditLifeTimeTotals()
 {
     VerifyPropertyIsAllowed(_capAudit, "AuditLifeTimeTotals");
 
-    
+
     vector<int> values;
 
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQueryAcceptorAuditLifeTimeTotals };
@@ -492,10 +492,10 @@ vector<int> CAcceptor::GetAuditLifeTimeTotals()
     // Verify that the length is of a correct size, which is a multiple of 8 plus 5 overhead
     // bytes, and there must be at least one datum.
     if (reply->size() < 13 || ((reply->size() - 5) % 8 != 0))
-	{
-		delete reply;
+    {
+        delete reply;
         return values;
-	}
+    }
 
 
     int fieldCount = ((*reply)[1] - 5) / 8;
@@ -503,7 +503,7 @@ vector<int> CAcceptor::GetAuditLifeTimeTotals()
     for (long i = 0; i < fieldCount; i++)
     {
        int value = (((*reply)[8*i +  3] & 0x0F) << 28) +
-                   (((*reply)[8*i +  4] & 0x0F) << 24) + 
+                   (((*reply)[8*i +  4] & 0x0F) << 24) +
                    (((*reply)[8*i +  5] & 0x0F) << 20) +
                    (((*reply)[8*i +  6] & 0x0F) << 16) +
                    (((*reply)[8*i +  7] & 0x0F) << 12) +
@@ -514,9 +514,9 @@ vector<int> CAcceptor::GetAuditLifeTimeTotals()
        values.push_back(value);
     }
 
-	delete reply;
+    delete reply;
 
-	return values;
+    return values;
 }
 
 
@@ -528,7 +528,7 @@ vector<int> CAcceptor::GetAuditPerformance()
 
 
     vector<int> values;
-    
+
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQueryAcceptorAuditPerformanceMeasures };
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
@@ -536,10 +536,10 @@ vector<int> CAcceptor::GetAuditPerformance()
     // Verify that the length is of a correct size, which is a multiple of 8 plus 5 overhead
     // bytes, and there must be at least one data
     if (reply->size() < 9 || ((reply->size() - 5) % 4 != 0))
-	{
-		delete reply;
+    {
+        delete reply;
         return values;
-	}
+    }
 
     int fieldCount = ((*reply)[1] - 5) / 4;
 
@@ -553,9 +553,9 @@ vector<int> CAcceptor::GetAuditPerformance()
         values.push_back(value);
     }
 
-	delete reply;
+    delete reply;
 
-	return values;
+    return values;
 }
 
 
@@ -567,7 +567,7 @@ vector<int> CAcceptor::GetAuditQP()
 
 
     vector<int> values;
-    
+
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQueryAcceptorAuditQPMeasures };
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
@@ -575,10 +575,10 @@ vector<int> CAcceptor::GetAuditQP()
     // Verify that the length is of a correct size, which is a multiple of 8 plus 5 overhead
     // bytes, and there must be at least one data
     if (reply->size() < 9 || ((reply->size() - 5) % 4 != 0))
-	{
-		delete reply;
+    {
+        delete reply;
         return values;
-	}
+    }
 
     int fieldCount = ((*reply)[1] - 5) / 4;
 
@@ -592,9 +592,9 @@ vector<int> CAcceptor::GetAuditQP()
        values.push_back(value);
     }
 
-	delete reply;
+    delete reply;
 
-	return values;
+    return values;
 }
 
 
@@ -602,12 +602,12 @@ vector<int> CAcceptor::GetAuditQP()
 
 bool CAcceptor::GetAutoStack()
 {
-	return _autoStack;
+    return _autoStack;
 }
 
 void CAcceptor::SetAutoStack(bool newVal)
 {
-	_autoStack = newVal;
+    _autoStack = newVal;
 }
 
 
@@ -615,7 +615,7 @@ void CAcceptor::SetAutoStack(bool newVal)
 
 string CAcceptor::GetBarCode()
 {
-	return _barCode;
+    return _barCode;
 }
 
 
@@ -623,7 +623,7 @@ string CAcceptor::GetBarCode()
 
 CBill CAcceptor::GetBill()
 {
-	return _bill;
+    return _bill;
 }
 
 
@@ -631,7 +631,7 @@ CBill CAcceptor::GetBill()
 
 vector<CBill> CAcceptor::GetBillTypes()
 {
-	return _billTypes;
+    return _billTypes;
 }
 
 
@@ -639,20 +639,20 @@ vector<CBill> CAcceptor::GetBillTypes()
 
 vector<bool> CAcceptor::GetBillTypeEnables()
 {
-	return _billTypeEnables;
+    return _billTypeEnables;
 }
 
 void CAcceptor::SetBillTypeEnables(vector<bool> newVal)
 {
     if (!_connected)
-	{
-		throw CAcceptorException("Calling BillTypeEnables not allowed when not connected.");
-	}
+    {
+        throw CAcceptorException("Calling BillTypeEnables not allowed when not connected.");
+    }
 
     if (_billTypeEnables.size() != _billTypes.size())
-	{
-		throw CAcceptorException("CBillTypeEnables size must match BillTypes size.");
-	}
+    {
+        throw CAcceptorException("CBillTypeEnables size must match BillTypes size.");
+    }
 
     _billTypeEnables = newVal;
 
@@ -660,7 +660,7 @@ void CAcceptor::SetBillTypeEnables(vector<bool> newVal)
     // omnibus command.
     if (_expandedNoteReporting)
     {
-	    char payload[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        char payload[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         ConstructOmnibusCommand(payload, CmdExpanded, 2);
         payload[1] = 0x03; // Sub Type
 
@@ -683,19 +683,19 @@ void CAcceptor::SetBillTypeEnables(vector<bool> newVal)
 
 vector<CBill> CAcceptor::GetBillValues()
 {
-	return _billValues;
+    return _billValues;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 vector<bool> CAcceptor::GetBillValueEnables()
 {
-	return _billValueEnables;
+    return _billValueEnables;
 }
 
 void CAcceptor::SetBillValueEnables(vector<bool> newVal)
 {
-	_billValueEnables = newVal;
+    _billValueEnables = newVal;
 
     for (unsigned i = 0; i < _billValueEnables.size(); i++)
     {
@@ -704,7 +704,7 @@ void CAcceptor::SetBillValueEnables(vector<bool> newVal)
             if ((_billTypes[i]._value == _billValues[j]._value) && (_billTypes[i]._country == _billValues[j]._country))
             {
                 _billTypeEnables[j] = _billValueEnables[i];
-			}
+            }
         }
     }
 
@@ -735,7 +735,7 @@ BNFStatus CAcceptor::GetBNFStatus()
 
 
     BNFStatus status;
-    
+
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQueryBNFStatus };
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
@@ -749,14 +749,14 @@ BNFStatus CAcceptor::GetBNFStatus()
         else
         {
             if ((*reply)[4] == 0)
-            	status = OK;
+                status = OK;
             else
-            	status = Error;
+                status = Error;
         }
     }
     else
     {
-    	status = Unknown;
+        status = Unknown;
     }
 
     return status;
@@ -773,20 +773,20 @@ string CAcceptor::GetBootPN()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-	if (reply->size() == 14)
-	{
-		string s(&(*reply)[3], 9);
-		
-		return s;
-	}
-	else
-	{
-		return "";
-	}
+    if (reply->size() == 14)
+    {
+        string s(&(*reply)[3], 9);
 
-	delete reply;
+        return s;
+    }
+    else
+    {
+        return "";
+    }
 
-	return "";
+    delete reply;
+
+    return "";
 }
 
 
@@ -794,7 +794,7 @@ string CAcceptor::GetBootPN()
 
 bool CAcceptor::GetCapApplicationID()
 {
-	return _capApplicationID;
+    return _capApplicationID;
 }
 
 
@@ -802,7 +802,7 @@ bool CAcceptor::GetCapApplicationID()
 
 bool CAcceptor::GetCapApplicationPN()
 {
-	return _capApplicationPN;
+    return _capApplicationPN;
 }
 
 
@@ -810,7 +810,7 @@ bool CAcceptor::GetCapApplicationPN()
 
 bool CAcceptor::GetCapAssetNumber()
 {
-	return _capAssetNumber;
+    return _capAssetNumber;
 }
 
 
@@ -818,7 +818,7 @@ bool CAcceptor::GetCapAssetNumber()
 
 bool CAcceptor::GetCapAudit()
 {
-	return _capAudit;
+    return _capAudit;
 }
 
 
@@ -826,7 +826,7 @@ bool CAcceptor::GetCapAudit()
 
 bool CAcceptor::GetCapBarCodes()
 {
-	return _capBarCodes;
+    return _capBarCodes;
 }
 
 
@@ -834,7 +834,7 @@ bool CAcceptor::GetCapBarCodes()
 
 bool CAcceptor::GetCapBarCodesExt()
 {
-	return _capBarCodesExt;
+    return _capBarCodesExt;
 }
 
 
@@ -842,7 +842,7 @@ bool CAcceptor::GetCapBarCodesExt()
 
 bool CAcceptor::GetCapBNFStatus()
 {
-	return _capBNFStatus;
+    return _capBNFStatus;
 }
 
 
@@ -850,7 +850,7 @@ bool CAcceptor::GetCapBNFStatus()
 
 bool CAcceptor::GetCapBookmark()
 {
-	return _capBookmark;
+    return _capBookmark;
 }
 
 
@@ -858,7 +858,7 @@ bool CAcceptor::GetCapBookmark()
 
 bool CAcceptor::GetCapBootPN()
 {
-	return _capBootPN;
+    return _capBootPN;
 }
 
 
@@ -866,7 +866,7 @@ bool CAcceptor::GetCapBootPN()
 
 bool CAcceptor::GetCapCalibrate()
 {
-	return _capCalibrate;
+    return _capCalibrate;
 }
 
 
@@ -874,7 +874,7 @@ bool CAcceptor::GetCapCalibrate()
 
 bool CAcceptor::GetCapCashBoxTotal()
 {
-	return _capCashBoxTotal;
+    return _capCashBoxTotal;
 }
 
 
@@ -882,7 +882,7 @@ bool CAcceptor::GetCapCashBoxTotal()
 
 bool CAcceptor::GetCapCouponExt()
 {
-	return _capCouponExt;
+    return _capCouponExt;
 }
 
 
@@ -890,7 +890,7 @@ bool CAcceptor::GetCapCouponExt()
 
 bool CAcceptor::GetCapDevicePaused()
 {
-	return _capDevicePaused;
+    return _capDevicePaused;
 }
 
 
@@ -898,7 +898,7 @@ bool CAcceptor::GetCapDevicePaused()
 
 bool CAcceptor::GetCapDeviceSoftReset()
 {
-	return _capDeviceSoftReset;
+    return _capDeviceSoftReset;
 }
 
 
@@ -906,7 +906,7 @@ bool CAcceptor::GetCapDeviceSoftReset()
 
 bool CAcceptor::GetCapDeviceType()
 {
-	return _capDeviceType;
+    return _capDeviceType;
 }
 
 
@@ -914,7 +914,7 @@ bool CAcceptor::GetCapDeviceType()
 
 bool CAcceptor::GetCapDeviceResets()
 {
-	return _capDeviceResets;
+    return _capDeviceResets;
 }
 
 
@@ -922,7 +922,7 @@ bool CAcceptor::GetCapDeviceResets()
 
 bool CAcceptor::GetCapDeviceSerialNumber()
 {
-	return _capDeviceSerialNumber;
+    return _capDeviceSerialNumber;
 }
 
 
@@ -930,7 +930,7 @@ bool CAcceptor::GetCapDeviceSerialNumber()
 
 bool CAcceptor::GetCapEscrowTimeout()
 {
-	return _capEscrowTimeout;
+    return _capEscrowTimeout;
 }
 
 
@@ -938,7 +938,7 @@ bool CAcceptor::GetCapEscrowTimeout()
 
 bool CAcceptor::GetCapFlashDownload()
 {
-	return _capFlashDownload;
+    return _capFlashDownload;
 }
 
 
@@ -946,7 +946,7 @@ bool CAcceptor::GetCapFlashDownload()
 
 bool CAcceptor::GetCapNoPush()
 {
-	return _capNoPush;
+    return _capNoPush;
 }
 
 
@@ -954,7 +954,7 @@ bool CAcceptor::GetCapNoPush()
 
 bool CAcceptor::GetCapOrientationExt()
 {
-	return _capOrientationExt;
+    return _capOrientationExt;
 }
 
 
@@ -962,7 +962,7 @@ bool CAcceptor::GetCapOrientationExt()
 
 bool CAcceptor::GetCapPupExt()
 {
-	return _capPupExt;
+    return _capPupExt;
 }
 
 
@@ -970,7 +970,7 @@ bool CAcceptor::GetCapPupExt()
 
 bool CAcceptor::GetCapTestDoc()
 {
-	return _capTestDoc;
+    return _capTestDoc;
 }
 
 
@@ -978,7 +978,7 @@ bool CAcceptor::GetCapTestDoc()
 
 bool CAcceptor::GetCapVariantID()
 {
-	return _capVariantID;
+    return _capVariantID;
 }
 
 
@@ -986,7 +986,7 @@ bool CAcceptor::GetCapVariantID()
 
 bool CAcceptor::GetCapVariantPN()
 {
-	return _capVariantPN;
+    return _capVariantPN;
 }
 
 
@@ -994,7 +994,7 @@ bool CAcceptor::GetCapVariantPN()
 
 bool CAcceptor::GetCashBoxAttached()
 {
-	return _cashBoxAttached;
+    return _cashBoxAttached;
 }
 
 
@@ -1002,7 +1002,7 @@ bool CAcceptor::GetCashBoxAttached()
 
 bool CAcceptor::GetCashBoxFull()
 {
-	return _cashBoxFull;
+    return _cashBoxFull;
 }
 
 
@@ -1018,25 +1018,25 @@ long CAcceptor::GetCashBoxTotal()
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
     long total;
-    
+
     if (reply->size() < 9)
-	{
-    	total = 0;
-	}
-	else
-	{
-		total = (((*reply)[3] & 0x0F) << 20) +
-				(((*reply)[4] & 0x0F) << 16) +
-				(((*reply)[5] & 0x0F) << 12) +
-				(((*reply)[6] & 0x0F) << 8) +
-				(((*reply)[7] & 0x0F) << 4) +
-				(((*reply)[8] & 0x0F));
-	}
+    {
+        total = 0;
+    }
+    else
+    {
+        total = (((*reply)[3] & 0x0F) << 20) +
+                (((*reply)[4] & 0x0F) << 16) +
+                (((*reply)[5] & 0x0F) << 12) +
+                (((*reply)[6] & 0x0F) << 8) +
+                (((*reply)[7] & 0x0F) << 4) +
+                (((*reply)[8] & 0x0F));
+    }
 
 
-	delete reply;
+    delete reply;
 
-	return total;
+    return total;
 }
 
 
@@ -1044,7 +1044,7 @@ long CAcceptor::GetCashBoxTotal()
 
 bool CAcceptor::GetConnected()
 {
-	return _connected;
+    return _connected;
 }
 
 
@@ -1052,7 +1052,7 @@ bool CAcceptor::GetConnected()
 
 CCoupon CAcceptor::GetCoupon()
 {
-	return _coupon;
+    return _coupon;
 }
 
 
@@ -1060,7 +1060,7 @@ CCoupon CAcceptor::GetCoupon()
 
 bool CAcceptor::GetDebugLog()
 {
-	return _debugLog;
+    return _debugLog;
 }
 
 void CAcceptor::SetDebugLog(bool newVal)
@@ -1090,12 +1090,12 @@ void CAcceptor::SetDebugLog(bool newVal)
 
 string CAcceptor::GetDebugLogPath()
 {
-	return _debugLogPath;
+    return _debugLogPath;
 }
 
 void CAcceptor::SetDebugLogPath(string newVal)
 {
-	_debugLogPath = newVal;
+    _debugLogPath = newVal;
 }
 
 
@@ -1103,8 +1103,8 @@ void CAcceptor::SetDebugLogPath(string newVal)
 
 bool CAcceptor::GetDeviceBusy()
 {
-	
-	return (_deviceState != Idling);
+
+    return (_deviceState != Idling);
 }
 
 
@@ -1118,24 +1118,24 @@ long CAcceptor::GetDeviceCRC()
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQuerySoftwareCRC };
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
-    
+
     long crc;
 
     if (reply->size() < 7)
-	{
-    	crc = 0;
-	}
-	else
-	{
-		crc = (((*reply)[3] & 0x0F) << 12) +
-				(((*reply)[4] & 0x0F) << 8) +
-				(((*reply)[5] & 0x0F) << 4) +
-				(((*reply)[6] & 0x0F));
-	}
+    {
+        crc = 0;
+    }
+    else
+    {
+        crc = (((*reply)[3] & 0x0F) << 12) +
+                (((*reply)[4] & 0x0F) << 8) +
+                (((*reply)[5] & 0x0F) << 4) +
+                (((*reply)[6] & 0x0F));
+    }
 
-	delete reply;
+    delete reply;
 
-	return crc;
+    return crc;
 }
 
 
@@ -1143,7 +1143,7 @@ long CAcceptor::GetDeviceCRC()
 
 bool CAcceptor::GetDeviceFailure()
 {
-	return (_deviceState == Failed);
+    return (_deviceState == Failed);
 }
 
 
@@ -1151,7 +1151,7 @@ bool CAcceptor::GetDeviceFailure()
 
 bool CAcceptor::GetDeviceJammed()
 {
-	return _isDeviceJammed;
+    return _isDeviceJammed;
 }
 
 
@@ -1159,7 +1159,7 @@ bool CAcceptor::GetDeviceJammed()
 
 long CAcceptor::GetDeviceModel()
 {
-	return _deviceModel;
+    return _deviceModel;
 }
 
 
@@ -1167,7 +1167,7 @@ long CAcceptor::GetDeviceModel()
 
 bool CAcceptor::GetDevicePaused()
 {
-	return _devicePaused;
+    return _devicePaused;
 }
 
 
@@ -1175,7 +1175,7 @@ bool CAcceptor::GetDevicePaused()
 
 string CAcceptor::GetDevicePortName()
 {
-	return _devicePortName;
+    return _devicePortName;
 }
 
 
@@ -1183,7 +1183,7 @@ string CAcceptor::GetDevicePortName()
 
 PowerUp CAcceptor::GetDevicePowerUp()
 {
-	return _devicePowerUp;
+    return _devicePowerUp;
 }
 
 
@@ -1197,26 +1197,26 @@ long CAcceptor::GetDeviceResets()
     char payload[] = { CmdAuxiliary, 0, 0, CmdAuxQueryDeviceResets };
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
-    
+
     long resets;
 
     if (reply->size() < 9)
-	{
-    	resets = 0;
-	}
-	else
-	{
-		resets = (((*reply)[3] & 0x0F) << 20) +
-				 (((*reply)[4] & 0x0F) << 16) +
-				 (((*reply)[5] & 0x0F) << 12) +
-				 (((*reply)[6] & 0x0F) << 8) +
-				 (((*reply)[7] & 0x0F) << 4) +
-				 (((*reply)[8] & 0x0F));
-	}
+    {
+        resets = 0;
+    }
+    else
+    {
+        resets = (((*reply)[3] & 0x0F) << 20) +
+                 (((*reply)[4] & 0x0F) << 16) +
+                 (((*reply)[5] & 0x0F) << 12) +
+                 (((*reply)[6] & 0x0F) << 8) +
+                 (((*reply)[7] & 0x0F) << 4) +
+                 (((*reply)[8] & 0x0F));
+    }
 
-	delete reply;
+    delete reply;
 
-	return resets;
+    return resets;
 }
 
 
@@ -1224,7 +1224,7 @@ long CAcceptor::GetDeviceResets()
 
 long CAcceptor::GetDeviceRevision()
 {
-	return _deviceRevision;
+    return _deviceRevision;
 }
 
 
@@ -1239,21 +1239,21 @@ string CAcceptor::GetDeviceSerialNumber()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-    // According to the spec, the string is terminated by a "non-printable" character. I 
+    // According to the spec, the string is terminated by a "non-printable" character. I
     // don't know why it is not more specific, but Peter said to check for 0x00 to 0x1F or
     // 0x7F.
     unsigned validCharIndex = 3;
 
     while ((validCharIndex < reply->size()) && ((*reply)[validCharIndex] > 0x20) && ((*reply)[validCharIndex] < 0x7F) && validCharIndex <= 22)
         validCharIndex++;
-    
+
     int returnedStringLength = validCharIndex - 3;
 
-	string s(&(*reply)[3], returnedStringLength);
+    string s(&(*reply)[3], returnedStringLength);
 
-	delete reply;
+    delete reply;
 
-	return s;
+    return s;
 }
 
 
@@ -1261,7 +1261,7 @@ string CAcceptor::GetDeviceSerialNumber()
 
 bool CAcceptor::GetDeviceStalled()
 {
-	return _deviceStalled;
+    return _deviceStalled;
 }
 
 
@@ -1269,7 +1269,7 @@ bool CAcceptor::GetDeviceStalled()
 
 State CAcceptor::GetDeviceState()
 {
-	return _deviceState;
+    return _deviceState;
 }
 
 
@@ -1284,21 +1284,21 @@ string CAcceptor::GetDeviceType()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-    // According to the spec, the string is terminated by a "non-printable" character. I 
+    // According to the spec, the string is terminated by a "non-printable" character. I
     // don't know why it is not more specific, but Peter said to check for 0x00 to 0x1F or
     // 0x7F.
     unsigned validCharIndex = 3;
 
     while ((validCharIndex < reply->size()) && ((*reply)[validCharIndex] > 0x20) && ((*reply)[validCharIndex] < 0x7F) && validCharIndex <= 22)
         validCharIndex++;
-    
+
     int returnedStringLength = validCharIndex - 3;
-    
-	string s(&(*reply)[3], returnedStringLength);
 
-	delete reply;
+    string s(&(*reply)[3], returnedStringLength);
 
-	return s;
+    delete reply;
+
+    return s;
 }
 
 
@@ -1306,59 +1306,59 @@ string CAcceptor::GetDeviceType()
 
 DocumentType CAcceptor::GetDocType()
 {
-	return _docType;
+    return _docType;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 int CAcceptor::GetTransactionTimeout()
 {
-	return _transactionTimeout;
+    return _transactionTimeout;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 void CAcceptor::SetTransactionTimeout(int newVal)
 {
-	_transactionTimeout = newVal;
+    _transactionTimeout = newVal;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 int CAcceptor::GetDownloadTimeout()
 {
-	return _downloadTimeout;
+    return _downloadTimeout;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 void CAcceptor::SetDownloadTimeout(int newVal)
 {
-	_downloadTimeout = newVal;
+    _downloadTimeout = newVal;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 bool CAcceptor::GetEnableAcceptance()
 {
-	return _enableAcceptance;
+    return _enableAcceptance;
 }
 
 void CAcceptor::SetEnableAcceptance(bool newVal)
 {
-	_enableAcceptance = newVal;
+    _enableAcceptance = newVal;
 }
 
 // -----------------------------------------------------------------------------------------------
 
 bool CAcceptor::GetEnableBarCodes()
 {
-	return _enableBarCodes;
+    return _enableBarCodes;
 }
 
 void CAcceptor::SetEnableBarCodes(bool newVal)
 {
-	_enableBarCodes = newVal;
+    _enableBarCodes = newVal;
 }
 
 
@@ -1366,12 +1366,12 @@ void CAcceptor::SetEnableBarCodes(bool newVal)
 
 bool CAcceptor::GetEnableBookmarks()
 {
-	return _enableBookmarks;
+    return _enableBookmarks;
 }
 
 void CAcceptor::SetEnableBookmarks(bool newVal)
 {
-	_enableBookmarks = newVal;
+    _enableBookmarks = newVal;
 }
 
 
@@ -1379,12 +1379,12 @@ void CAcceptor::SetEnableBookmarks(bool newVal)
 
 bool CAcceptor::GetEnableCouponExt()
 {
-	return _enableCouponExt;
+    return _enableCouponExt;
 }
 
 void CAcceptor::SetEnableCouponExt(bool newVal)
 {
-	_enableCouponExt = newVal;
+    _enableCouponExt = newVal;
 }
 
 
@@ -1392,12 +1392,12 @@ void CAcceptor::SetEnableCouponExt(bool newVal)
 
 bool CAcceptor::GetEnableNoPush()
 {
-	return _enableNoPush;
+    return _enableNoPush;
 }
 
 void CAcceptor::SetEnableNoPush(bool newVal)
 {
-	_enableNoPush = newVal;
+    _enableNoPush = newVal;
 }
 
 
@@ -1405,14 +1405,14 @@ void CAcceptor::SetEnableNoPush(bool newVal)
 
 Orientation CAcceptor::GetEscrowOrientation()
 {
-	if (_capOrientationExt)
-	{
-		return _escrowOrientation;
-	}
-	else
-	{
-		return UnknownOrientation;
-	}
+    if (_capOrientationExt)
+    {
+        return _escrowOrientation;
+    }
+    else
+    {
+        return UnknownOrientation;
+    }
 }
 
 
@@ -1420,12 +1420,12 @@ Orientation CAcceptor::GetEscrowOrientation()
 
 bool CAcceptor::GetHighSecurity()
 {
-	return _highSecurity;
+    return _highSecurity;
 }
 
 void CAcceptor::SetHighSecurity(bool newVal)
 {
-	_highSecurity = newVal;
+    _highSecurity = newVal;
 }
 
 
@@ -1433,12 +1433,12 @@ void CAcceptor::SetHighSecurity(bool newVal)
 
 OrientationControl CAcceptor::GetOrientationControl()
 {
-	return _orientationCtl;
+    return _orientationCtl;
 }
 
 void CAcceptor::SetOrientationControl(OrientationControl newVal)
 {
-	_orientationCtl = newVal;
+    _orientationCtl = newVal;
 }
 
 
@@ -1446,12 +1446,12 @@ void CAcceptor::SetOrientationControl(OrientationControl newVal)
 
 OrientationControl CAcceptor::GetOrientationCtlExt()
 {
-	return _orientationCtlExt;
+    return _orientationCtlExt;
 }
 
 void CAcceptor::SetOrientationCtlExt(OrientationControl newVal)
 {
-	_orientationCtlExt = newVal;
+    _orientationCtlExt = newVal;
 }
 
 
@@ -1466,21 +1466,21 @@ vector<string> CAcceptor::GetVariantNames()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-    // According to the spec, the string is terminated by a "non-printable" character. I 
+    // According to the spec, the string is terminated by a "non-printable" character. I
     // don't know why it is not more specific, but Peter said to check for 0x00 to 0x1F or
     // 0x7F.
     unsigned validCharIndex = 3;
     int nameCount = 0;
 
-	vector<string> names;
+    vector<string> names;
 
     while ((validCharIndex < reply->size()) && ((*reply)[validCharIndex] > 0x20) && ((*reply)[validCharIndex] < 0x7F) && validCharIndex <= 34)
     {
         if (validCharIndex + 2 < reply->size())
         {
-        	string s(&(*reply)[validCharIndex], 3);
+            string s(&(*reply)[validCharIndex], 3);
 
-			names.push_back(s);
+            names.push_back(s);
 
             nameCount++;
         }
@@ -1492,9 +1492,9 @@ vector<string> CAcceptor::GetVariantNames()
 
 
 
-	delete reply;
+    delete reply;
 
-	return names;
+    return names;
 }
 
 
@@ -1508,20 +1508,20 @@ string CAcceptor::GetVariantID()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-	if (reply->size() == 14)
-	{
-		string s(&(*reply)[3], 9);
-		
-		return s;
-	}
-	else
-	{
-		return "";
-	}
+    if (reply->size() == 14)
+    {
+        string s(&(*reply)[3], 9);
 
-	delete reply;
+        return s;
+    }
+    else
+    {
+        return "";
+    }
 
-	return "";
+    delete reply;
+
+    return "";
 }
 
 
@@ -1535,20 +1535,20 @@ string CAcceptor::GetVariantPN()
 
     vector<char>* reply = SendSynchronousCommand(payload, sizeof(payload));
 
-	if (reply->size() == 14)
-	{
-		string s(&(*reply)[3], 9);
-		
-		return s;
-	}
-	else
-	{
-		return "";
-	}
+    if (reply->size() == 14)
+    {
+        string s(&(*reply)[3], 9);
 
-	delete reply;
+        return s;
+    }
+    else
+    {
+        return "";
+    }
 
-	return "";
+    delete reply;
+
+    return "";
 }
 
 
@@ -1556,7 +1556,7 @@ string CAcceptor::GetVariantPN()
 
 string CAcceptor::GetVersion()
 {
-	return _version;
+    return _version;
 }
 
 
@@ -1567,9 +1567,9 @@ void CAcceptor::Calibrate()
     VerifyConnected("Calibrate");
 
     if (_deviceState != Idling)
-	{
-		throw CAcceptorException("Calibrate allowed only when DeviceState == Idling.");
-	}
+    {
+        throw CAcceptorException("Calibrate allowed only when DeviceState == Idling.");
+    }
 
 
     char payload[] = { CmdCalibrate, 0x00, 0x00, 0x00 };
@@ -1577,9 +1577,9 @@ void CAcceptor::Calibrate()
     vector<char>* reply;
 
     // If the worker thread is in the middle of a standard poll, we want to wait until it finishes.
-	pthread_mutex_lock(&inStandardPollMutex);		  
-	pthread_mutex_unlock(&inStandardPollMutex);
-		  
+    pthread_mutex_lock(&inStandardPollMutex);
+    pthread_mutex_unlock(&inStandardPollMutex);
+
 
     _suppressStandardPoll = true;
 
@@ -1602,14 +1602,14 @@ void CAcceptor::Calibrate()
         if (GetTickCount() - startTickCount > CalibrateTimeout)
         {
             RaiseCalibrateFinishEvent();
-			delete reply;
+            delete reply;
             return;
         }
 
     }
     while (true);
 
-	delete reply;
+    delete reply;
 }
 
 
@@ -1617,73 +1617,73 @@ void CAcceptor::Calibrate()
 
 struct FlashDownloadThreadParams
 {
-	CAcceptor*	acceptor;
-	ifstream	downloadFile;
-	streampos	downloadFileSize;
+    CAcceptor*    acceptor;
+    ifstream    downloadFile;
+    streampos    downloadFileSize;
 };
 
 void CAcceptor::FlashDownload(string filePath)
 {
     if (!_connected && _deviceState != DownloadRestart)
-	{
-		throw CAcceptorException("FlashDownload not allowed when not connected.");
-	}
+    {
+        throw CAcceptorException("FlashDownload not allowed when not connected.");
+    }
 
-	// NOTE
-	// THIS FIRST GUARD IS ONLY TEMPORARY UNTIL WE FIGURE OUT WHY THE S2K IS NOT SENDING DOWNLOAD BIT.
-	if (!((_deviceModel >= 65 && _deviceModel <= 71) || _deviceModel == 77 || _deviceModel == 80 || _deviceModel == 81 || _deviceModel == 87 || _deviceModel == 88))
-	{
-		if (_deviceState != Idling && _deviceState != DownloadRestart)
-		{
-			throw CAcceptorException("FlashDownload allowed only when DeviceState == Idling.");
-		}
-	}
+    // NOTE
+    // THIS FIRST GUARD IS ONLY TEMPORARY UNTIL WE FIGURE OUT WHY THE S2K IS NOT SENDING DOWNLOAD BIT.
+    if (!((_deviceModel >= 65 && _deviceModel <= 71) || _deviceModel == 77 || _deviceModel == 80 || _deviceModel == 81 || _deviceModel == 87 || _deviceModel == 88))
+    {
+        if (_deviceState != Idling && _deviceState != DownloadRestart)
+        {
+            throw CAcceptorException("FlashDownload allowed only when DeviceState == Idling.");
+        }
+    }
 
-	time_t currentTime;
-	char timeBuffer[32];
-	time(&currentTime);    	
-	strftime(timeBuffer, sizeof(timeBuffer), "FlashDownload: %H:%M:%S", localtime(&currentTime));
-	cout << timeBuffer << endl;
+    time_t currentTime;
+    char timeBuffer[32];
+    time(&currentTime);
+    strftime(timeBuffer, sizeof(timeBuffer), "FlashDownload: %H:%M:%S", localtime(&currentTime));
+    cout << timeBuffer << endl;
 
 
-	FlashDownloadThreadParams* params = new FlashDownloadThreadParams;
+    FlashDownloadThreadParams* params = new FlashDownloadThreadParams;
 
-	params->downloadFile.open(filePath.c_str(), ios_base::in | ios_base::binary);
+    params->downloadFile.open(filePath.c_str(), ios_base::in | ios_base::binary);
 
-	streampos begin = params->downloadFile.tellg();
-	
-	params->downloadFile.seekg(0, ios::end);
+    streampos begin = params->downloadFile.tellg();
 
-	params->downloadFileSize = params->downloadFile.tellg() - begin;
+    params->downloadFile.seekg(0, ios::end);
+
+    params->downloadFileSize = params->downloadFile.tellg() - begin;
 
     if ((params->downloadFileSize % 32) != 0)
     {
         params->downloadFile.close();
 
-		throw CAcceptorException("Flash download file size must be divisible by 32.");
+        throw CAcceptorException("Flash download file size must be divisible by 32.");
 
-		delete params;
+        delete params;
 
-		return;
+        return;
     }
 
 
-	params->acceptor = this;
+    params->acceptor = this;
 
-	pthread_create(&_flashDownloadThread, NULL, FlashDownloadThread, (void*)params);
+    pthread_create(&_flashDownloadThread, NULL, FlashDownloadThread, (void*)params);
 
-	return;
+    return;
 }
 
 
 void* CAcceptor::FlashDownloadThread(void* param)
 {
-	FlashDownloadThreadParams* params = static_cast<FlashDownloadThreadParams*>(param);
+    FlashDownloadThreadParams* params = static_cast<FlashDownloadThreadParams*>(param);
 
-	CAcceptor* acceptor = params->acceptor;
-	
-	CSuppressStandardPoll suppressStandardPoll(acceptor);
-	
+    CAcceptor* acceptor = params->acceptor;
+
+    CSuppressStandardPoll suppressStandardPoll(acceptor);
+
     vector<char>* reply = NULL;
 
     char payload[] = { CmdOmnibus, 0x00, 0x00, 0x00 };
@@ -1694,9 +1694,9 @@ void* CAcceptor::FlashDownloadThread(void* param)
     if (acceptor->_deviceState != DownloadRestart)
     {
         // If the worker thread is in the middle of a standard poll, we want to wait until it finishes.
-    	pthread_mutex_lock(&inStandardPollMutex);    		  
-    	pthread_mutex_unlock(&inStandardPollMutex);
-    		  
+        pthread_mutex_lock(&inStandardPollMutex);
+        pthread_mutex_unlock(&inStandardPollMutex);
+
         // NOTE
         // This might technically be wrong, depending on how we choose to define when the DownloadStart
         // state should be set. Setting it here tells the Worker thread to stop normal polling.
@@ -1707,13 +1707,13 @@ void* CAcceptor::FlashDownloadThread(void* param)
             if (acceptor->_stopFlashDownloadThread)
             {
                 acceptor->_deviceState = Idling;
-				acceptor->_flashDownloadThread = NULL;
-				delete params;
+                acceptor->_flashDownloadThread = NULL;
+                delete params;
                 return 0;
             }
 
-			if (reply != NULL)
-				delete reply;
+            if (reply != NULL)
+                delete reply;
 
             reply = acceptor->SendSynchronousCommand(payload, sizeof(payload));
 
@@ -1723,9 +1723,9 @@ void* CAcceptor::FlashDownloadThread(void* param)
             {
                 acceptor->RaiseDownloadFinishEvent(false);
                 acceptor->_deviceState = Idling;
-				acceptor->_flashDownloadThread = NULL;
-				delete reply;
-				delete params;
+                acceptor->_flashDownloadThread = NULL;
+                delete reply;
+                delete params;
                 return 0;
             }
         }
@@ -1738,8 +1738,8 @@ void* CAcceptor::FlashDownloadThread(void* param)
 
             do
             {
-				if (reply != NULL)
-					delete reply;
+                if (reply != NULL)
+                    delete reply;
 
                 reply = acceptor->SendSynchronousCommand(payload2, sizeof(payload2));
 
@@ -1771,20 +1771,20 @@ void* CAcceptor::FlashDownloadThread(void* param)
     }
 
 
-	char payload3[69];
+    char payload3[69];
 
     payload3[0] = CmdFlashDownload;
 
     long timeoutStartTickCount = GetTickCount();
-    
+
     do
     {
         if (acceptor->_stopFlashDownloadThread)
         {
             acceptor->_deviceState = Idling;
-			acceptor->_flashDownloadThread = NULL;
-			delete reply;
-			delete params;
+            acceptor->_flashDownloadThread = NULL;
+            delete reply;
+            delete params;
             return 0;
         }
 
@@ -1795,25 +1795,25 @@ void* CAcceptor::FlashDownloadThread(void* param)
 
         char dataBuffer[32];
 
-		params->downloadFile.seekg(packetNum * 32);
+        params->downloadFile.seekg(packetNum * 32);
 
-		params->downloadFile.read(dataBuffer, 32);
+        params->downloadFile.read(dataBuffer, 32);
 
-		if ((params->downloadFile.rdstate() & ios::failbit) == 0)
-		{
-			for (int i = 0; i < 32; i++)
-			{
-				payload3[5 + i * 2] = (char)((dataBuffer[i] & 0xF0) >> 4);
-				payload3[6 + i * 2] = (char)(dataBuffer[i] & 0x0F);
-			}
-		}
-		else
-		{
-			// What do we do???
-		}
+        if ((params->downloadFile.rdstate() & ios::failbit) == 0)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                payload3[5 + i * 2] = (char)((dataBuffer[i] & 0xF0) >> 4);
+                payload3[6 + i * 2] = (char)(dataBuffer[i] & 0x0F);
+            }
+        }
+        else
+        {
+            // What do we do???
+        }
 
-		if (reply != NULL)
-			delete reply;
+        if (reply != NULL)
+            delete reply;
 
         reply = acceptor->SendSynchronousCommand(payload3, sizeof(payload3));
 
@@ -1828,7 +1828,7 @@ void* CAcceptor::FlashDownloadThread(void* param)
         }
         else
         {
-			usleep(200 * MICRO_TO_MILLI);
+            usleep(200 * MICRO_TO_MILLI);
 
             if (reply->size() == 9)
             {
@@ -1844,13 +1844,13 @@ void* CAcceptor::FlashDownloadThread(void* param)
         {
             timeoutStartTickCount = GetTickCount();
         }
-		else if ((GetTickCount() - timeoutStartTickCount) > CAcceptor::CommunicationDisconnectTimeout)
+        else if ((GetTickCount() - timeoutStartTickCount) > CAcceptor::CommunicationDisconnectTimeout)
         {
             acceptor->RaiseDownloadFinishEvent(false);
             acceptor->_deviceState = Idling;
-			acceptor->_flashDownloadThread = NULL;
-			delete reply;
-			delete params;
+            acceptor->_flashDownloadThread = NULL;
+            delete reply;
+            delete params;
             return 0;
         }
     }
@@ -1866,20 +1866,20 @@ void* CAcceptor::FlashDownloadThread(void* param)
 
     acceptor->PollingLoop(acceptor, &reply, wasStopped);
 
-	time_t currentTime;
-	char timeBuffer[32];
-	time(&currentTime);    	
-	strftime(timeBuffer, sizeof(timeBuffer), "FlashDownload: %H:%M:%S", localtime(&currentTime));
-	cout << timeBuffer << endl;
-	
-	
+    time_t currentTime;
+    char timeBuffer[32];
+    time(&currentTime);
+    strftime(timeBuffer, sizeof(timeBuffer), "FlashDownload: %H:%M:%S", localtime(&currentTime));
+    cout << timeBuffer << endl;
+
+
     if (wasStopped)
-	{
-		acceptor->_flashDownloadThread = NULL;
-		delete reply;
-		delete params;
-	    return 0;
-	}
+    {
+        acceptor->_flashDownloadThread = NULL;
+        delete reply;
+        delete params;
+        return 0;
+    }
 
     acceptor->ProcessReply(*reply);
 
@@ -1899,11 +1899,11 @@ void* CAcceptor::FlashDownloadThread(void* param)
     acceptor->_connected = true;
     acceptor->RaiseConnectedEvent();
 
-	acceptor->_flashDownloadThread = NULL;
+    acceptor->_flashDownloadThread = NULL;
 
-	delete params;
+    delete params;
 
-	return 0;
+    return 0;
 }
 
 
@@ -1939,7 +1939,7 @@ void CAcceptor::SetAssetNumber(string asset)
     VerifyConnected("SetAssetNumber");
 
 
-	char payload[21] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    char payload[21] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     ConstructOmnibusCommand(payload, CmdExpanded, 2);
 
@@ -1959,7 +1959,7 @@ void CAcceptor::SetBezel(Bezel bezel)
     VerifyConnected("SetBezelNumber");
 
 
-	char payload[4] = { CmdAuxiliary, bezel, 0x00, CmdAuxSetBezel };
+    char payload[4] = { CmdAuxiliary, bezel, 0x00, CmdAuxSetBezel };
 
     SendAsynchronousCommand(payload, sizeof(payload));
 }
@@ -1971,9 +1971,9 @@ void CAcceptor::SoftReset()
 {
     VerifyConnected("SoftReset");
 
-    
+
     _docType = NoValue;
-    
+
 
     char payload[] = { CmdAuxiliary, 0x7F, 0x7F, 0x7F };
 
@@ -1991,7 +1991,7 @@ void CAcceptor::SpecifyEscrowTimeout(long billTimeout, long barcodeTimeout)
     VerifyConnected("SpecifyEscrowTimeout");
 
 
-	char payload[7] = {0, 0, 0, 0, 0, 0, 0};
+    char payload[7] = {0, 0, 0, 0, 0, 0, 0};
 
     ConstructOmnibusCommand(payload, CmdExpanded, 2);
 
@@ -2012,7 +2012,7 @@ void CAcceptor::SpecifyPupExt(char pupMode, PupExt preEscrow, PupExt atEscrow, P
     VerifyConnected("SpecifyPupExt");
 
 
-	char payload[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    char payload[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     ConstructOmnibusCommand(payload, CmdExpanded, 2);
 
@@ -2033,21 +2033,21 @@ void CAcceptor::SpecifyPupExt(char pupMode, PupExt preEscrow, PupExt atEscrow, P
 
 string CAcceptor::DocumentTypeToString(DocumentType docType)
 {
-	switch (docType)
-	{
-	case None:
-		return "None";
-	case NoValue:
-		return "No Value";
-	case Bill:
-		return "Bill";
-	case Barcode:
-		return "Barcode";
-	case Coupon:
-		return "Coupon";
-	default:
-		return "";
-	}
+    switch (docType)
+    {
+    case None:
+        return "None";
+    case NoValue:
+        return "No Value";
+    case Bill:
+        return "Bill";
+    case Barcode:
+        return "Barcode";
+    case Coupon:
+        return "Coupon";
+    default:
+        return "";
+    }
 }
 
 
@@ -2055,24 +2055,24 @@ string CAcceptor::DocumentTypeToString(DocumentType docType)
 
 void CAcceptor::Log(string message)
 {
-	if (!_logWriter.is_open())
-	{
-		return;
-	}
+    if (!_logWriter.is_open())
+    {
+        return;
+    }
 
-	time_t currentTime;
-	time(&currentTime);
-	
-	char timeBuffer[32];
-	strftime(timeBuffer, sizeof(timeBuffer), "%H:%M:%S", localtime(&currentTime));
+    time_t currentTime;
+    time(&currentTime);
 
-	stringstream line;
+    char timeBuffer[32];
+    strftime(timeBuffer, sizeof(timeBuffer), "%H:%M:%S", localtime(&currentTime));
 
-	line << timeBuffer << ": " << message.c_str() << "\n";
+    stringstream line;
 
-	_logWriter.write(line.str().c_str(), (streamsize)line.str().length());
+    line << timeBuffer << ": " << message.c_str() << "\n";
 
-	_logWriter.flush();
+    _logWriter.write(line.str().c_str(), (streamsize)line.str().length());
+
+    _logWriter.flush();
 }
 
 
@@ -2080,33 +2080,33 @@ void CAcceptor::Log(string message)
 
 void CAcceptor::OpenLogFile()
 {
-	string shortPortName;
-	
-	stringstream logFilename;
-	
-	size_t slashPos = _devicePortName.rfind('/');
-	
-	if (slashPos != string::npos)
-		shortPortName = _devicePortName.substr(slashPos + 1, string::npos);
-	else
-		shortPortName = _devicePortName;
-	
-	logFilename << _debugLogPath.c_str() << "MPOST_Log_" << shortPortName.c_str() << ".txt";
-	
-	_logWriter.open(logFilename.str().c_str(), ios_base::out | ios_base::ate | ios_base::app);
-	_logWriter.seekp(0, ios::end); 
+    string shortPortName;
 
-	
-	time_t currentTime;
-	time(&currentTime);	
-	char date[32];
-	strftime(date, sizeof(date), "%c", localtime(&currentTime));
+    stringstream logFilename;
 
-	stringstream message;
+    size_t slashPos = _devicePortName.rfind('/');
 
-	message << "M/POST version " << _version << " log opened " << date << ".";
+    if (slashPos != string::npos)
+        shortPortName = _devicePortName.substr(slashPos + 1, string::npos);
+    else
+        shortPortName = _devicePortName;
 
-	Log("--------------------------------------------------------------------------------");
+    logFilename << _debugLogPath.c_str() << "MPOST_Log_" << shortPortName.c_str() << ".txt";
+
+    _logWriter.open(logFilename.str().c_str(), ios_base::out | ios_base::ate | ios_base::app);
+    _logWriter.seekp(0, ios::end);
+
+
+    time_t currentTime;
+    time(&currentTime);
+    char date[32];
+    strftime(date, sizeof(date), "%c", localtime(&currentTime));
+
+    stringstream message;
+
+    message << "M/POST version " << _version << " log opened " << date << ".";
+
+    Log("--------------------------------------------------------------------------------");
     Log(message.str());
 }
 
@@ -2116,7 +2116,7 @@ void CAcceptor::OpenLogFile()
 void CAcceptor::CloseLogFile()
 {
     if (_workerThread != 0)
-		_dataLinkLayer->FlushIdenticalTransactionsToLog();
+        _dataLinkLayer->FlushIdenticalTransactionsToLog();
 
     Log("Log closed.");
 
@@ -2138,117 +2138,117 @@ void CAcceptor::BuildHardCodedBillTable()
         case 'J':
         case 'X':
 #ifdef _DEBUG
-		case 'T':
+        case 'T':
 #endif
             {
-				_billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 'P':
             {
-				_billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
             }
             break;
 
         case 'G':
             {
-				_billTypes.push_back(CBill());
-				_billTypes.push_back(CBill("ARS", 2, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("ARS", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("ARS", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("ARS", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("ARS", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("ARS", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill());
+                _billTypes.push_back(CBill("ARS", 2, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("ARS", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("ARS", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("ARS", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("ARS", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("ARS", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 'A':
             {
-				_billTypes.push_back(CBill("AUD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 15:
             {
-				_billTypes.push_back(CBill());
-				_billTypes.push_back(CBill());
-				_billTypes.push_back(CBill("AUD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("AUD", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill());
+                _billTypes.push_back(CBill());
+                _billTypes.push_back(CBill("AUD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("AUD", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 'W':
             {
-				_billTypes.push_back(CBill("BRL", 1, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 2, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("BRL", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 1, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 2, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("BRL", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 'C':
             {
-				_billTypes.push_back(CBill());
-				_billTypes.push_back(CBill());
-				_billTypes.push_back(CBill("CAD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("CAD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("CAD", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("CAD", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("CAD", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill());
+                _billTypes.push_back(CBill());
+                _billTypes.push_back(CBill("CAD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("CAD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("CAD", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("CAD", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("CAD", 100, '*', '*', '*', '*'));
             }
             break;
 
         case 'D':
             {
-				_billTypes.push_back(CBill("EUR", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("EUR", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("EUR", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("EUR", 10, '*', '*', '*', '*'));
             }
             break;
 
         case 'M':
             {
-				_billTypes.push_back(CBill("MXP", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("MXP", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("MXP", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("MXP", 50, '*', '*', '*', '*'));
             }
             break;
 
         case 'B':
             {
-				_billTypes.push_back(CBill("RUR", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("RUR", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("RUR", 100, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("RUR", 500, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("RUR", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("RUR", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("RUR", 100, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("RUR", 500, '*', '*', '*', '*'));
             }
             break;
 
-		default:
-			{
-				_billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 50, '*', '*', '*', '*'));
-				_billTypes.push_back(CBill("USD", 100, '*', '*', '*', '*'));
+        default:
+            {
+                _billTypes.push_back(CBill("USD", 1, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 2, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 5, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 10, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 20, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 50, '*', '*', '*', '*'));
+                _billTypes.push_back(CBill("USD", 100, '*', '*', '*', '*'));
             }
             break;
 
@@ -2256,12 +2256,12 @@ void CAcceptor::BuildHardCodedBillTable()
     }
 
     for (unsigned i = 0; i < _billTypes.size(); i++)
-	{
-		if (_billTypes[i]._value > 0)
-	        _billTypeEnables.push_back(true);
-		else
-	        _billTypeEnables.push_back(false);
-	}
+    {
+        if (_billTypes[i]._value > 0)
+            _billTypeEnables.push_back(true);
+        else
+            _billTypeEnables.push_back(false);
+    }
 }
 
 
@@ -2285,13 +2285,13 @@ void CAcceptor::BuildBillValues()
                 break;
             }
         }
-        
+
         if (!valueExists)
         {
-			_billValues.push_back(CBill(_billTypes[i]._country, _billTypes[i]._value, '*', '*', '*', '*'));
+            _billValues.push_back(CBill(_billTypes[i]._country, _billTypes[i]._value, '*', '*', '*', '*'));
             billValuesCount++;
 
-			_billValueEnables.push_back(_billTypes[i]._value > 0);
+            _billValueEnables.push_back(_billTypes[i]._value > 0);
         }
     }
 }
@@ -2301,21 +2301,21 @@ void CAcceptor::BuildBillValues()
 
 void CAcceptor::SetUpBillTable()
 {
-	ClearBillTable();
+    ClearBillTable();
 
     if (_expandedNoteReporting)
     {
-    	time_t currentTime;
-    	char timeBuffer[32];
-    	time(&currentTime);    	
-    	strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
-    	cout << timeBuffer << endl;
+        time_t currentTime;
+        char timeBuffer[32];
+        time(&currentTime);
+        strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
+        cout << timeBuffer << endl;
 
-    	RetrieveBillTable();
+        RetrieveBillTable();
 
-    	time(&currentTime);    	
-    	strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
-    	cout << timeBuffer << endl;
+        time(&currentTime);
+        strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
+        cout << timeBuffer << endl;
     }
     else
     {
@@ -2332,12 +2332,12 @@ void CAcceptor::ConstructOmnibusCommand(char* payload, char controlCode, int dat
     payload[0] = controlCode;
 
     if (_enableBookmarks && _enableAcceptance && _deviceState != Calibrating)
-		payload[0] |= 0x20;
+        payload[0] |= 0x20;
 
 
     char data0 = 0;
 
-	if (_enableAcceptance && _deviceState != Calibrating)
+    if (_enableAcceptance && _deviceState != Calibrating)
     {
         if (_expandedNoteReporting)
         {
@@ -2467,26 +2467,26 @@ char CAcceptor::GetPupExtValueCode(PupExt pupExt)
 
 CBill CAcceptor::ParseBillData(vector<char>& reply, unsigned extDataIndex)
 {
-	CBill bill;
-	
+    CBill bill;
+
     if (reply.size() < (extDataIndex + 14 + 1))
         return bill;
 
-	char country[4];
-	strncpy(country, &reply[extDataIndex + 1], 3);
-	country[3] = 0;
-	bill._country = country;
+    char country[4];
+    strncpy(country, &reply[extDataIndex + 1], 3);
+    country[3] = 0;
+    bill._country = country;
 
-	char valueString[4];
-	strncpy(valueString, &reply[extDataIndex + 4], 3);
-	valueString[3] = 0;
-	double billValue = atof(valueString);
+    char valueString[4];
+    strncpy(valueString, &reply[extDataIndex + 4], 3);
+    valueString[3] = 0;
+    double billValue = atof(valueString);
 
     char exponentSign = reply[extDataIndex + 7];
 
-	char exponentString[3];
-	strncpy(exponentString, &reply[extDataIndex + 8], 2);
-	exponentString[2] = 0;
+    char exponentString[3];
+    strncpy(exponentString, &reply[extDataIndex + 8], 2);
+    exponentString[2] = 0;
     int exponent = atoi(exponentString);
 
     if (exponentSign == '+')
@@ -2500,7 +2500,7 @@ CBill CAcceptor::ParseBillData(vector<char>& reply, unsigned extDataIndex)
             billValue /= 10.0;
     }
 
-	bill._value = billValue;
+    bill._value = billValue;
 
     _docType = Bill;
 
@@ -2529,9 +2529,9 @@ CBill CAcceptor::ParseBillData(vector<char>& reply, unsigned extDataIndex)
     bill._series = reply[extDataIndex + 12];
     bill._compatibility = reply[extDataIndex + 13];
     bill._version = reply[extDataIndex + 14];
-    
-    
-	return bill;
+
+
+    return bill;
 }
 
 // -----------------------------------------------------------------------------------------------
@@ -2539,10 +2539,10 @@ CBill CAcceptor::ParseBillData(vector<char>& reply, unsigned extDataIndex)
 void CAcceptor::ProcessReply(vector<char>& reply)
 {
     if (reply.size() < 3)
-	{
-		delete &reply;
+    {
+        delete &reply;
         return;
-	}
+    }
 
     char ctl = reply[2];
 
@@ -2569,7 +2569,7 @@ void CAcceptor::ProcessReply(vector<char>& reply)
 
             if (_deviceState == Escrow || (_deviceState == Stacked && !_wasDocTypeSetOnEscrow))
             {
-            	_bill = ParseBillData(reply, 10);
+                _bill = ParseBillData(reply, 10);
 
                 if (_capOrientationExt)
                 {
@@ -2613,13 +2613,13 @@ void CAcceptor::ProcessReply(vector<char>& reply)
 
     // NOTE
     // I'm not 100% sure that this is the best place for this. However, after going through a full round of testing of
-	// the C# version of this code, and then a full round of this C++ code testing, I do not think this is a going to be
-	// a problem.
+    // the C# version of this code, and then a full round of this C++ code testing, I do not think this is a going to be
+    // a problem.
     if (_deviceState != Escrow && _deviceState != Stacking)
         _wasDocTypeSetOnEscrow = false;
 
 
-	delete &reply;
+    delete &reply;
 }
 
 
@@ -2628,9 +2628,9 @@ void CAcceptor::ProcessReply(vector<char>& reply)
 void CAcceptor::ProcessExtendedOmnibusBarCodeReply(vector<char>& reply)
 {
     if (reply.size() < 38)
-	{
+    {
         return;
-	}
+    }
 
     // Set the capabilities before processing the other bytes.
     ProcessData4(reply[8]);
@@ -2646,7 +2646,7 @@ void CAcceptor::ProcessExtendedOmnibusBarCodeReply(vector<char>& reply)
         for (int i = 10; i < 38; i++)
         {
             if (reply[i] != '(')
-				_barCode += reply[i];
+                _barCode += reply[i];
             else
                 break;
         }
@@ -2676,9 +2676,9 @@ void CAcceptor::ProcessExtendedOmnibusExpandedNoteReply(vector<char>& reply)
 void CAcceptor::ProcessExtendedOmnibusExpandedCouponReply(vector<char>& reply)
 {
     if (reply.size() < 15)
-	{
+    {
         return;
-	}
+    }
 
     // Set the capabilities before processing the other bytes.
     ProcessData4(reply[8]);
@@ -2702,8 +2702,8 @@ void CAcceptor::ProcessExtendedOmnibusExpandedCouponReply(vector<char>& reply)
 
         int ownerID = (couponData & 0xFFF8) >> 3;
 
-		_coupon._ownerID = ownerID;
-		_coupon._value = value;
+        _coupon._ownerID = ownerID;
+        _coupon._value = value;
 
         _docType = Coupon;
 
@@ -2717,9 +2717,9 @@ void CAcceptor::ProcessExtendedOmnibusExpandedCouponReply(vector<char>& reply)
 void CAcceptor::ProcessStandardOmnibusReply(vector<char>& reply)
 {
     if (reply.size() < 9)
-	{
+    {
         return;
-	}
+    }
 
     // Set the capabilities before processing the other bytes.
     ProcessData4(reply[7]);
@@ -2756,9 +2756,9 @@ void CAcceptor::ProcessData0(char data0)
     if ((data0 & 0x0004) != 0)
     {
         _deviceState = Escrow;
-        
+
         if (_autoStack)
-        	_shouldRaiseEscrowEvent = false;
+            _shouldRaiseEscrowEvent = false;
     }
     else
     {
@@ -2784,7 +2784,7 @@ void CAcceptor::ProcessData0(char data0)
     {
         _deviceState = Returned;
 
-		_bill = CBill();
+        _bill = CBill();
 
         _docType = NoValue;
     }
@@ -2843,9 +2843,9 @@ void CAcceptor::ProcessData1(char data1)
 
 
     _cashBoxAttached = ((data1 & 0x0010) != 0);
-    
+
     if (!_cashBoxAttached)
-    	_docType = NoValue;
+        _docType = NoValue;
 
 
     if ((data1 & 0x0020) != 0)
@@ -2893,7 +2893,7 @@ void CAcceptor::ProcessData2(char data2)
             // we only set it on Escrow, or on Stacked if it was not already set on Escrow.
             if (_deviceState == Escrow || (_deviceState == Stacked && !_wasDocTypeSetOnEscrow))
             {
-            	_bill = _billTypes[billTypeIndex - 1];
+                _bill = _billTypes[billTypeIndex - 1];
 
                 _docType = Bill;
 
@@ -2922,11 +2922,11 @@ void CAcceptor::ProcessData2(char data2)
         }
         else if (_deviceState == Escrow)
         {
-			_bill = CBill();
+            _bill = CBill();
             _docType = NoValue;
         }
-    }            
-    
+    }
+
 
     if ((data2 & 0x0001) != 0)
     {
@@ -3055,7 +3055,7 @@ void CAcceptor::ProcessData5(char data5)
 
 void CAcceptor::QueryDeviceCapabilities()
 {
-	if (!_isQueryDeviceCapabilitiesSupported)
+    if (!_isQueryDeviceCapabilitiesSupported)
         return;
 
     char payload[] = { CmdAuxiliary, 0x00, 0x00, CmdAuxQueryDeviceCapabilities };
@@ -3063,12 +3063,12 @@ void CAcceptor::QueryDeviceCapabilities()
     vector<char> *reply = SendSynchronousCommand(payload, sizeof(payload));
 
     if (reply->size() < 4)
-	{
-		// TODO
-		// Refactor delete statements;
-		delete reply;
+    {
+        // TODO
+        // Refactor delete statements;
+        delete reply;
         return;
-	}
+    }
 
     if (((*reply)[3] & 0x01) != 0)
         _capPupExt = true;
@@ -3088,8 +3088,8 @@ void CAcceptor::QueryDeviceCapabilities()
     if (((*reply)[3] & 0x10) != 0)
         _capTestDoc = true;
 
-	delete reply;
-	}
+    delete reply;
+    }
 
 // -----------------------------------------------------------------------------------------------
 
@@ -3174,7 +3174,7 @@ void CAcceptor::RaiseEvents()
         case PupEscrow:
         case Returning:
         case Stacking:
-        	break;
+            break;
     }
 
     if (_deviceState != Stalled && _shouldRaiseStallClearedEvent)
@@ -3235,7 +3235,7 @@ void CAcceptor::RaiseEvents()
 
     if (_isInvalidCommand & _shouldRaiseInvalidCommandEvent)
     {
-		RaiseInvalidCommandEvent();
+        RaiseInvalidCommandEvent();
         _shouldRaiseInvalidCommandEvent = false;
     }
 
@@ -3253,7 +3253,7 @@ void CAcceptor::RaiseCalibrateStartEvent()
     Log("EVNT: CalibrateStart");
 
     if (_eventHandlers[CalibrateStartEvent])
-    	_eventHandlers[CalibrateStartEvent](this, 0);
+        _eventHandlers[CalibrateStartEvent](this, CalibrateStartEvent, 0);
 }
 
 
@@ -3264,7 +3264,7 @@ void CAcceptor::RaiseCalibrateProgressEvent()
     Log("EVNT: CalibrateProgress");
 
     if (_eventHandlers[CalibrateProgressEvent])
-    	_eventHandlers[CalibrateProgressEvent](this, 0);
+        _eventHandlers[CalibrateProgressEvent](this, CalibrateProgressEvent, 0);
 
     _shouldRaiseCalibrateProgressEvent = false;
 }
@@ -3277,7 +3277,7 @@ void CAcceptor::RaiseCalibrateFinishEvent()
     Log("EVNT: CalibrateFinish");
 
     if (_eventHandlers[CalibrateFinishEvent])
-    	_eventHandlers[CalibrateFinishEvent](this, 0);
+        _eventHandlers[CalibrateFinishEvent](this, CalibrateFinishEvent, 0);
 
     _shouldRaiseCalibrateFinishEvent = false;
 }
@@ -3288,9 +3288,9 @@ void CAcceptor::RaiseCalibrateFinishEvent()
 void CAcceptor::RaiseConnectedEvent()
 {
     Log("EVNT: Connected");
- 
+
     if (_eventHandlers[ConnectedEvent])
-    	_eventHandlers[ConnectedEvent](this, 0);
+        _eventHandlers[ConnectedEvent](this, ConnectedEvent, 0);
 
     _shouldRaiseConnectedEvent = false;
     _shouldRaiseDisconnectedEvent = true;
@@ -3304,7 +3304,7 @@ void CAcceptor::RaiseDisconnectedEvent()
     Log("EVNT: Disconnected");
 
     if (_eventHandlers[DisconnectedEvent])
-    	_eventHandlers[DisconnectedEvent](this, 0);
+        _eventHandlers[DisconnectedEvent](this, DisconnectedEvent, 0);
 
     _shouldRaiseDisconnectedEvent = false;
     _shouldRaiseConnectedEvent = true;
@@ -3318,7 +3318,7 @@ void CAcceptor::RaiseEscrowEvent()
     Log("EVNT: Escrow");
 
     if (_eventHandlers[EscrowEvent])
-    	_eventHandlers[EscrowEvent](this, 0);
+        _eventHandlers[EscrowEvent](this, EscrowEvent, 0);
 
     _shouldRaiseEscrowEvent = false;
 }
@@ -3331,7 +3331,7 @@ void CAcceptor::RaisePUPEscrowEvent()
     Log("EVNT: PUP Escrow");
 
     if (_eventHandlers[PUPEscrowEvent])
-    	_eventHandlers[PUPEscrowEvent](this, 0);
+        _eventHandlers[PUPEscrowEvent](this, PUPEscrowEvent, 0);
 
     _shouldRaiseEscrowEvent = false;
 }
@@ -3344,7 +3344,7 @@ void CAcceptor::RaiseReturnedEvent()
     Log("EVNT: Returned");
 
     if (_eventHandlers[ReturnedEvent])
-    	_eventHandlers[ReturnedEvent](this, 0);
+        _eventHandlers[ReturnedEvent](this, ReturnedEvent, 0);
 
     _shouldRaiseReturnedEvent = false;
 }
@@ -3357,7 +3357,7 @@ void CAcceptor::RaiseStackedEvent()
     Log("EVNT: Stacked");
 
     if (_eventHandlers[StackedEvent])
-    	_eventHandlers[StackedEvent](this, 0);
+        _eventHandlers[StackedEvent](this, StackedEvent, 0);
 
     _shouldRaiseStackedEvent = false;
 }
@@ -3370,7 +3370,7 @@ void CAcceptor::RaiseRejectedEvent()
     Log("EVNT: Rejected");
 
     if (_eventHandlers[RejectedEvent])
-    	_eventHandlers[RejectedEvent](this, 0);
+        _eventHandlers[RejectedEvent](this, RejectedEvent, 0);
 
     _shouldRaiseRejectedEvent = false;
 }
@@ -3383,7 +3383,7 @@ void CAcceptor::RaiseStallDetectedEvent()
     Log("EVNT: Stall Detected");
 
     if (_eventHandlers[StallDetectedEvent])
-    	_eventHandlers[StallDetectedEvent](this, 0);
+        _eventHandlers[StallDetectedEvent](this, StallDetectedEvent, 0);
 
     _shouldRaiseStallDetectedEvent = false;
 }
@@ -3396,7 +3396,7 @@ void CAcceptor::RaiseStallClearedEvent()
     Log("EVNT: Stall Cleared");
 
     if (_eventHandlers[StallClearedEvent])
-    	_eventHandlers[StallClearedEvent](this, 0);
+        _eventHandlers[StallClearedEvent](this, StallClearedEvent, 0);
 
     _shouldRaiseStallClearedEvent = false;
 }
@@ -3409,7 +3409,7 @@ void CAcceptor::RaisePauseDetectedEvent()
     Log("EVNT: Pause Detected");
 
     if (_eventHandlers[PauseDetectedEvent])
-    	_eventHandlers[PauseDetectedEvent](this, 0);
+        _eventHandlers[PauseDetectedEvent](this, PauseDetectedEvent, 0);
 
     _shouldRaisePauseDetectedEvent = false;
 }
@@ -3422,7 +3422,7 @@ void CAcceptor::RaisePauseClearedEvent()
     Log("EVNT: Pause Cleared");
 
     if (_eventHandlers[PauseClearedEvent])
-    	_eventHandlers[PauseClearedEvent](this, 0);
+        _eventHandlers[PauseClearedEvent](this, PauseClearedEvent, 0);
 
     _shouldRaisePauseClearedEvent = false;
 }
@@ -3435,7 +3435,7 @@ void CAcceptor::RaiseJamDetectedEvent()
     Log("EVNT: Jam Detected");
 
     if (_eventHandlers[JamDetectedEvent])
-    	_eventHandlers[JamDetectedEvent](this, 0);
+        _eventHandlers[JamDetectedEvent](this, JamDetectedEvent, 0);
 
     _shouldRaiseJamDetectedEvent = false;
 }
@@ -3448,7 +3448,7 @@ void CAcceptor::RaiseJamClearedEvent()
     Log("EVNT: Jam Cleared");
 
     if (_eventHandlers[JamClearedEvent])
-    	_eventHandlers[JamClearedEvent](this, 0);
+        _eventHandlers[JamClearedEvent](this, JamClearedEvent, 0);
 
     _shouldRaiseJamClearedEvent = false;
 }
@@ -3461,7 +3461,7 @@ void CAcceptor::RaiseStackerFullEvent()
     Log("EVNT: Stacker Full");
 
     if (_eventHandlers[StackerFullEvent])
-    	_eventHandlers[StackerFullEvent](this, 0);
+        _eventHandlers[StackerFullEvent](this, StackerFullEvent, 0);
 
     _shouldRaiseStackerFullEvent = false;
 }
@@ -3474,7 +3474,7 @@ void CAcceptor::RaiseCheatedEvent()
     Log("EVNT: Cheated");
 
     if (_eventHandlers[CheatedEvent])
-    	_eventHandlers[CheatedEvent](this, 0);
+        _eventHandlers[CheatedEvent](this, CheatedEvent, 0);
 
     _shouldRaiseCheatedEvent = false;
 }
@@ -3487,7 +3487,7 @@ void CAcceptor::RaiseCashBoxAttachedEvent()
     Log("EVNT: Cash Box Attached");
 
     if (_eventHandlers[CashBoxAttachedEvent])
-    	_eventHandlers[CashBoxAttachedEvent](this, 0);
+        _eventHandlers[CashBoxAttachedEvent](this, CashBoxAttachedEvent, 0);
 
     _shouldRaiseCashBoxAttachedEvent = false;
 }
@@ -3500,7 +3500,7 @@ void CAcceptor::RaiseCashBoxRemovedEvent()
     Log("EVNT: Cash Box Removed");
 
     if (_eventHandlers[CashBoxRemovedEvent])
-    	_eventHandlers[CashBoxRemovedEvent](this, 0);
+        _eventHandlers[CashBoxRemovedEvent](this, CashBoxRemovedEvent, 0);
 
     _shouldRaiseCashBoxRemovedEvent = false;
 }
@@ -3513,7 +3513,7 @@ void CAcceptor::RaisePowerUpEvent()
     Log("EVNT: Power Up");
 
     if (_eventHandlers[PowerUpEvent])
-    	_eventHandlers[PowerUpEvent](this, 0);
+        _eventHandlers[PowerUpEvent](this, PowerUpEvent, 0);
 
     _shouldRaisePowerUpEvent = false;
 }
@@ -3526,7 +3526,7 @@ void CAcceptor::RaiseInvalidCommandEvent()
     Log("EVNT: Invalid Command");
 
     if (_eventHandlers[InvalidCommandEvent])
-    	_eventHandlers[InvalidCommandEvent](this, 0);
+        _eventHandlers[InvalidCommandEvent](this, InvalidCommandEvent, 0);
 
     _shouldRaiseInvalidCommandEvent = false;
 }
@@ -3539,7 +3539,7 @@ void CAcceptor::RaiseDownloadRestartEvent()
     Log("EVNT: Download Restart");
 
     if (_eventHandlers[DownloadRestartEvent])
-    	_eventHandlers[DownloadRestartEvent](this, 0);
+        _eventHandlers[DownloadRestartEvent](this, DownloadRestartEvent, 0);
 
     _shouldRaiseDownloadRestartEvent = false;
 }
@@ -3552,7 +3552,7 @@ void CAcceptor::RaiseDownloadStartEvent(int sectorCount)
     Log("EVNT: Download Start");
 
     if (_eventHandlers[DownloadStartEvent])
-    	_eventHandlers[DownloadStartEvent](this, sectorCount);
+        _eventHandlers[DownloadStartEvent](this, DownloadStartEvent, sectorCount);
 
     _shouldRaiseDownloadStartEvent = false;
     _shouldRaiseDownloadProgressEvent = true;
@@ -3566,7 +3566,7 @@ void CAcceptor::RaiseDownloadProgressEvent(int sectorCount)
     Log("EVNT: Download Progress");
 
     if (_eventHandlers[DownloadProgressEvent])
-    	_eventHandlers[DownloadProgressEvent](this, sectorCount);
+        _eventHandlers[DownloadProgressEvent](this, DownloadProgressEvent, sectorCount);
 }
 
 
@@ -3577,7 +3577,7 @@ void CAcceptor::RaiseDownloadFinishEvent(bool success)
     Log("EVNT: Download Finish");
 
     if (_eventHandlers[DownloadFinishEvent])
-    	_eventHandlers[DownloadFinishEvent](this, success);
+        _eventHandlers[DownloadFinishEvent](this, DownloadFinishEvent, success);
 
     _shouldRaiseDownloadFinishEvent = false;
 }
@@ -3589,13 +3589,13 @@ void CAcceptor::RaiseDownloadFinishEvent(bool success)
 void CAcceptor::ClearBillTable()
 {
 
-	_billTypes.clear();
+    _billTypes.clear();
 
-	_billTypeEnables.clear();
+    _billTypeEnables.clear();
 
-	_billValues.clear();
+    _billValues.clear();
 
-	_billValueEnables.clear();
+    _billValueEnables.clear();
 }
 
 
@@ -3623,7 +3623,7 @@ void CAcceptor::RetrieveBillTable()
             if (reply->size() == 30)
                 break;
 
-			delete reply;
+            delete reply;
 
             usleep(100000); // Arbitrary value.
         }
@@ -3637,15 +3637,15 @@ void CAcceptor::RetrieveBillTable()
         }
 
         if ((*reply)[10] == 0)
-		{
-			delete reply;
+        {
+            delete reply;
             break;
-		}
+        }
 
 
         CBill billFromTable = ParseBillData(*reply, 10);
 
-		delete reply;
+        delete reply;
 
         _billTypes.push_back(billFromTable);
 
@@ -3669,42 +3669,42 @@ void CAcceptor::SendAsynchronousCommand(char* payload, int payloadLength)
 
 vector<char>* CAcceptor::SendSynchronousCommand(char* payload, int payloadLength)
 {
-	assert(_replyQueue.size() == 0);
+    assert(_replyQueue.size() == 0);
 
 // TODO
-// Figure out why the thread synchronization causes FlashDownload to fail. Other than that, the 
+// Figure out why the thread synchronization causes FlashDownload to fail. Other than that, the
 // follow statements seem to work.
-//	pthread_mutex_lock( &mutex1 );
-		  
-	_messageQueue.push_back(new CMessage(payload, payloadLength, true));
-	
-//	pthread_cond_wait(&condition1, &mutex1);
-	
-//	pthread_mutex_unlock( &mutex1 );
+//    pthread_mutex_lock( &mutex1 );
 
-	int thirtySecondTimer = 0;
-	
-	while (_replyQueue.empty())
-	{
-		usleep(10000);
-		
-		if (thirtySecondTimer++ == 3000000)
-			break;
-	}
+    _messageQueue.push_back(new CMessage(payload, payloadLength, true));
 
-	if (!_replyQueue.empty())
-	{
-		vector<char>* reply = _replyQueue.front();
+//    pthread_cond_wait(&condition1, &mutex1);
 
-		_replyQueue.pop_front();
+//    pthread_mutex_unlock( &mutex1 );
 
-		return reply;
-	}
+    int thirtySecondTimer = 0;
+
+    while (_replyQueue.empty())
+    {
+        usleep(10000);
+
+        if (thirtySecondTimer++ == 3000000)
+            break;
+    }
+
+    if (!_replyQueue.empty())
+    {
+        vector<char>* reply = _replyQueue.front();
+
+        _replyQueue.pop_front();
+
+        return reply;
+    }
     else
     {
-		assert(false);
+        assert(false);
 
-		return new vector<char>;
+        return new vector<char>;
     }
 }
 
@@ -3718,48 +3718,48 @@ vector<char>* CAcceptor::SendSynchronousCommand(char* payload, int payloadLength
 void CAcceptor::VerifyPropertyIsAllowed(bool capabilityFlag, string propertyName)
 {
     if (!_connected)
-	{
-		stringstream ss;
-		ss << "Calling " << propertyName << " not allowed when not connected.";
-		
-		throw CAcceptorException(ss.str());
-	}
+    {
+        stringstream ss;
+        ss << "Calling " << propertyName << " not allowed when not connected.";
+
+        throw CAcceptorException(ss.str());
+    }
 
     if (!capabilityFlag)
-	{
-		stringstream ss;
-		ss << "Device does not support " << propertyName << ".";
-		
-		throw CAcceptorException(ss.str());
-	}
+    {
+        stringstream ss;
+        ss << "Device does not support " << propertyName << ".";
+
+        throw CAcceptorException(ss.str());
+    }
 
     if (_deviceState == DownloadStart || _deviceState == Downloading)
-	{
-		stringstream ss;
-		ss << "Calling " << propertyName << " not allowed during flash download.";
-		
-		throw CAcceptorException(ss.str());
-	}
+    {
+        stringstream ss;
+        ss << "Calling " << propertyName << " not allowed during flash download.";
+
+        throw CAcceptorException(ss.str());
+    }
 
     if (_deviceState == CalibrateStart || _deviceState == Calibrating)
-	{
-		stringstream ss;
-		ss << "Calling " << propertyName << " not allowed during calibration.";
-		
-		throw CAcceptorException(ss.str());
-	}
+    {
+        stringstream ss;
+        ss << "Calling " << propertyName << " not allowed during calibration.";
+
+        throw CAcceptorException(ss.str());
+    }
 }
 
 
 void CAcceptor::VerifyConnected(string functionName)
 {
     if (!_connected)
-	{
-		stringstream ss;
-		ss << "Calling " << functionName << " not allowed when not connected.";
-		
-		throw CAcceptorException(ss.str());
-	}
+    {
+        stringstream ss;
+        ss << "Calling " << functionName << " not allowed when not connected.";
+
+        throw CAcceptorException(ss.str());
+    }
 }
 
 
@@ -3767,29 +3767,29 @@ void CAcceptor::VerifyConnected(string functionName)
 
 char* CAcceptor::itoa(int val, char* buffer, int base)
 {
-	static char tmpBuffer[32];
-	
-	int i = 30;
-	
-	for(; val && i ; --i, val /= base)
-	{
-		tmpBuffer[i] = "0123456789abcdef"[val % base];
-	}
-	
-	if (i == 30)
-	{
-		tmpBuffer[i] = '0';
-		i--;
-	}
-	if (i == 29)
-	{
-		tmpBuffer[i] = '0';
-		i--;
-	}
-	
-	strcpy(buffer, &tmpBuffer[i + 1]);
-	
-	return buffer;
+    static char tmpBuffer[32];
+
+    int i = 30;
+
+    for(; val && i ; --i, val /= base)
+    {
+        tmpBuffer[i] = "0123456789abcdef"[val % base];
+    }
+
+    if (i == 30)
+    {
+        tmpBuffer[i] = '0';
+        i--;
+    }
+    if (i == 29)
+    {
+        tmpBuffer[i] = '0';
+        i--;
+    }
+
+    strcpy(buffer, &tmpBuffer[i + 1]);
+
+    return buffer;
 }
 
 

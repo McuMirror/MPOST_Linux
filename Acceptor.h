@@ -301,7 +301,7 @@ public:
 	int GetDownloadTimeout();
 	void SetDownloadTimeout(int newVal);
 
-	void SetEventHandler(Event event, void(*eventHandler)(CAcceptor* acceptor, int value))
+	void SetEventHandler(Event event, void(*eventHandler)(CAcceptor* acceptor, Event event, int value))
 	{
 		_eventHandlers[event] = eventHandler;	
 	}
@@ -313,7 +313,7 @@ public:
 	static char* itoa(int val, char* buffer, int base);
 	
 private:
-	void(*_eventHandlers[28])(CAcceptor*, int);
+	void(*_eventHandlers[28])(CAcceptor*, Event, int);
 	
 	bool OpenPort();
 	
