@@ -174,7 +174,7 @@ public:
 		_description = description;
 	}
 	
-	string GetDescription()
+	string GetDescription() const
 	{
 		return _description;
 	}
