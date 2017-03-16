@@ -2305,17 +2305,7 @@ void CAcceptor::SetUpBillTable()
 
     if (_expandedNoteReporting)
     {
-        time_t currentTime;
-        char timeBuffer[32];
-        time(&currentTime);
-        strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
-        cout << timeBuffer << endl;
-
         RetrieveBillTable();
-
-        time(&currentTime);
-        strftime(timeBuffer, sizeof(timeBuffer), "RetrieveBillTable: %H:%M:%S", localtime(&currentTime));
-        cout << timeBuffer << endl;
     }
     else
     {
